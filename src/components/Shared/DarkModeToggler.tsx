@@ -1,29 +1,38 @@
 "use client";
 
 import { useLocalStorage } from "@/features/hooks/useLocalStorage";
-import { useMemo } from "react";
+import { useEffect } from "react";
 
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 
-export default function DarkModeToggler() {
-  const [isLocalDarkMode, setDarkMode] = useLocalStorage("dark-mode");
+function toggleDarkMode(toDarkMode: boolean) {
+  if (toDarkMode) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}
 
-  const isDarkMode = useMemo(() => {
-    if (isLocalDarkMode != null) return isLocalDarkMode;
-    else
-      return (
+export default function DarkModeToggler() {
+  const [isDarkMode, setDarkMode] = useLocalStorage("dark-mode");
+
+  useEffect(() => {
+    if (typeof isDarkMode === "boolean") {
+      toggleDarkMode(isDarkMode);
+    } else {
+      const isPrefersDarkMode =
         window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      );
-  }, [isLocalDarkMode]);
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      setDarkMode(isPrefersDarkMode);
+    }
+  }, [isDarkMode, setDarkMode]);
 
   function handleDarkMode() {
     if (isDarkMode) {
       setDarkMode(false);
-      document.documentElement.classList.remove("dark");
     } else {
       setDarkMode(true);
-      document.documentElement.classList.add("dark");
     }
   }
 
@@ -31,6 +40,7 @@ export default function DarkModeToggler() {
     <button
       onClick={handleDarkMode}
       className="flex aspect-square w-[3.6rem] items-center justify-center text-black dark:text-white"
+      title={isDarkMode ? "Toggle light mode" : "Toggle dark mode"}
     >
       {isDarkMode ? <BsFillMoonFill size={36} /> : <BsFillSunFill size={36} />}
     </button>

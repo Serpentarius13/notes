@@ -1,0 +1,15 @@
+.sidebar {
+  animation: roll 0.2s linear forwards;
+}
+
+@keyframes roll {
+  from {
+    translate: -100%;
+    opacity: 0;
+  }
+
+  to {
+    translate: 0;
+    opacity: 1;
+  }
+}
