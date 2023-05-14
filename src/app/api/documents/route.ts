@@ -6,6 +6,8 @@ import {
 import { Document } from "@prisma/client";
 import { NextResponse } from "next/server";
 
+import prisma from "@/features/lib/prisma";
+
 export async function POST(request: Request) {
   try {
     const { text, title } = await request.json();

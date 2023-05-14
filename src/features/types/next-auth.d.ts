@@ -3,7 +3,7 @@ import { User } from "next-auth";
 interface AuxilaryFields {}
 declare module "next-auth/jwt" {
   interface JWT extends AuxilaryFields {
-    id: UserId;
+    id: string;
   }
 }
 
