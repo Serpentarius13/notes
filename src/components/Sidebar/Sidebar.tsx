@@ -28,7 +28,7 @@ const sidebarLinks: TSidebarLink[] = [
   },
 ];
 
-export default  async function Sidebar() {
+export default async function Sidebar() {
   const session = await getServerSession(authOptions);
   return (
     <>
@@ -46,7 +46,7 @@ export default  async function Sidebar() {
                 />
               </Link>
 
-              <DarkModeToggler />
+              <DarkModeToggler isShowingButton />
             </div>
 
             <ul className="flex flex-col gap-[1rem]">

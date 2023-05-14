@@ -13,7 +13,11 @@ function toggleDarkMode(toDarkMode: boolean) {
   }
 }
 
-export default function DarkModeToggler() {
+export default function DarkModeToggler({
+  isShowingButton = false,
+}: {
+  isShowingButton?: boolean;
+}) {
   const [isDarkMode, setDarkMode] = useLocalStorage("dark-mode");
 
   useEffect(() => {
@@ -26,7 +30,7 @@ export default function DarkModeToggler() {
 
       setDarkMode(isPrefersDarkMode);
     }
-  }, [isDarkMode, setDarkMode]);
+  }, [isDarkMode, setDarkMode, isShowingButton]);
 
   function handleDarkMode() {
     if (isDarkMode) {
@@ -37,12 +41,20 @@ export default function DarkModeToggler() {
   }
 
   return (
-    <button
-      onClick={handleDarkMode}
-      className="flex aspect-square w-[3.6rem] items-center justify-center text-black dark:text-white"
-      title={isDarkMode ? "Toggle light mode" : "Toggle dark mode"}
-    >
-      {isDarkMode ? <BsFillMoonFill size={36} /> : <BsFillSunFill size={36} />}
-    </button>
+    <>
+      {isShowingButton && (
+        <button
+          onClick={handleDarkMode}
+          className="flex aspect-square w-[3.6rem] items-center justify-center text-black dark:text-white"
+          title={isDarkMode ? "Toggle light mode" : "Toggle dark mode"}
+        >
+          {isDarkMode ? (
+            <BsFillMoonFill size={36} />
+          ) : (
+            <BsFillSunFill size={36} />
+          )}
+        </button>
+      )}
+    </>
   );
 }

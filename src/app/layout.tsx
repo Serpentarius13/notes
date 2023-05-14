@@ -1,6 +1,7 @@
 import Sidebar from "@/components/Sidebar/Sidebar";
 import "../../assets/main.scss";
 import { Roboto_Slab } from "next/font/google";
+import DarkModeToggler from "@/components/Shared/DarkModeToggler";
 
 const RobotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -20,6 +21,8 @@ export default async function RootLayout({
         {/* @ts-expect-error Server Component */}
         <Sidebar /> {children}
       </body>
+
+      <DarkModeToggler />
     </html>
   );
 }

@@ -51,7 +51,7 @@ const AddNoteForm = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex  w-max flex-col items-start  gap-[1rem] "
+      className="flex  flex-col items-start  gap-[1rem] w-full "
       ref={formRef}
     >
       <TextInput handleChange={handleTitleChange} placeholder="Note title" />

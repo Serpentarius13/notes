@@ -3,12 +3,12 @@
 import { Note as NoteType } from "@prisma/client";
 import { FormEvent, useEffect, useState } from "react";
 import TextInput from "../Shared/Input/TextInput";
-import Note from "./Note/Note";
+
 import NoteInner from "./Note/NoteInner";
 import NoteDate from "./Note/NoteDate";
 import Button from "../Shared/Buttons/Button";
 import { serverFetcher } from "@/features/api/serverFetcher";
-import Loading from "../Loading";
+import Loading from "../Shared/LoadingPage";
 
 export default function NotePage({ note }: { note: NoteType }) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
