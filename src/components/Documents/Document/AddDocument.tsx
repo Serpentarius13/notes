@@ -12,8 +12,6 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
 
   const router = useRouter();
 
-  const [file, setFile] = useState<File>();
-
   const [fileText, setFileText] = useState<string>("");
 
   const { value: title, handleChange } = useField<string>("");
@@ -24,8 +22,6 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
     reader.readAsText(file);
 
     reader.onload = (event) => setFileText(event!.target!.result as string);
-
-    setFile(file);
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -36,6 +32,8 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
       await serverFetcher.post("/api/documents", { text: fileText, title });
 
       toaster.success("Document succesfully created!");
+
+      handleClose()
 
       router.refresh();
     } catch (error) {

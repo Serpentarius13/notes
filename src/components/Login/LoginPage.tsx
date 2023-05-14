@@ -5,6 +5,7 @@ export default function LoginPage() {
   return (
     <MainLayout title="Login">
       <LoginProvider provider="google" />
+      <LoginProvider provider="github" />
     </MainLayout>
   );
 }

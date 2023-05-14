@@ -2,10 +2,12 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { AuthOptions } from "next-auth";
 
 import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 
 import prisma from "./prisma";
 
-function getCredentials(prefix: string) {
+export type TProvider = "google" | "github";
+function getCredentials(prefix: TProvider) {
   const clientId =
     process.env.NODE_ENV == "development"
       ? process.env[`DEV_${prefix.toUpperCase()}_CLIENT_ID`]
@@ -31,6 +33,11 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: getCredentials("google").clientId,
       clientSecret: getCredentials("google").clientSecret,
+    }),
+
+    GitHubProvider({
+      clientId: getCredentials("github").clientId,
+      clientSecret: getCredentials("github").clientSecret,
     }),
   ],
 
