@@ -3,5 +3,8 @@
 
   "rules": {
     "no-undef": "error"
+  },
+  "globals": {
+    "React": true
   }
 }
