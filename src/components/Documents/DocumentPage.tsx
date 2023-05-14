@@ -32,8 +32,8 @@ export default function DocumentPage({
 
     try {
       setIsLoading(true);
-      const { data } = await axios.patch("/api/note", {
-        note: documentState,
+      const { data } = await axios.patch("/api/documents", {
+        document: documentState,
       });
       setDocumentState(data);
 

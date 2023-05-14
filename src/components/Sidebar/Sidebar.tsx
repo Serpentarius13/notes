@@ -29,7 +29,11 @@ const sidebarLinks: TSidebarLink[] = [
     title: "To your notes",
   },
 
-  { to: "/documents", icon: <AiFillFileText size={32} />, title: "To your documents" },
+  {
+    to: "/documents",
+    icon: <AiFillFileText size={32} />,
+    title: "To your documents",
+  },
 ];
 
 export default async function Sidebar() {
@@ -50,7 +54,7 @@ export default async function Sidebar() {
                 />
               </Link>
 
-              <DarkModeToggler isShowingButton />
+              <DarkModeToggler />
             </div>
 
             <ul className="flex flex-col gap-[1rem]">

@@ -6,10 +6,10 @@ import { redirect } from "next/navigation";
 
 export async function GET(
   request: Request,
-  { params: { noteId } }: { params: { noteId: string | number } }
+  { params: { noteId } }: { params: { noteId: string } }
 ) {
   try {
-    const note = await prisma?.note.findFirst({ where: { id: +noteId } });
+    const note = await prisma?.note.findFirst({ where: { id: noteId } });
 
     return NextResponse.json(note);
   } catch (error) {
@@ -19,12 +19,11 @@ export async function GET(
 
 export async function DELETE(
   request: Request,
-  { params: { noteId } }: { params: { noteId: string | number } }
+  { params: { noteId } }: { params: { noteId: string } }
 ) {
   try {
-    await prisma?.note.delete({ where: { id: +noteId } });
+    await prisma?.note.delete({ where: { id: noteId } });
 
-    console.log("ok");
     return new Response("ok");
   } catch (error) {
     console.log(error);

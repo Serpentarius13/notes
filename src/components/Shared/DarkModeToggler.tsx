@@ -1,80 +1,33 @@
 "use client";
 
-import {
-  getFromLocalStorage,
-  setToLocalStorage,
-} from "@/features/utils/localStorage";
-import { useEffect, useState } from "react";
-
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 
-const localStorageKey = "dark-mode";
+import { useTheme } from "next-themes";
 
-function toggleDarkMode(toDarkMode: boolean) {
-  if (toDarkMode) {
-    document.documentElement.classList.add("dark");
-    setToLocalStorage(localStorageKey, true);
-  } else {
-    document.documentElement.classList.remove("dark");
+import { useEffect, useState } from "react";
 
-    localStorage.setItem(localStorageKey, JSON.stringify(false));
-  }
+export default function DarkModeToggler() {
+  const { theme, setTheme } = useTheme();
 
-  window.dispatchEvent(new Event(localStorageKey));
-}
+  const [state, setState] = useState(0);
 
-export default function DarkModeToggler({
-  isShowingButton = false,
-}: {
-  isShowingButton?: boolean;
-}) {
-  const [isDarkMode, setDarkMode] = useState<boolean>(
-    getFromLocalStorage(localStorageKey)
-  );
-
-  function handleDarkmodeEvent() {
-    setDarkMode(getFromLocalStorage(localStorageKey));
-  }
   useEffect(() => {
-    if (typeof isDarkMode === "boolean") {
-      toggleDarkMode(isDarkMode);
-    } else {
-      const isPrefersDarkMode =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-      setDarkMode(isPrefersDarkMode);
-    }
-
-    window.addEventListener(localStorageKey, handleDarkmodeEvent);
-
-    return () =>
-      window.removeEventListener(localStorageKey, handleDarkmodeEvent);
-  }, [isDarkMode, setDarkMode, isShowingButton]);
-
-  function handleDarkMode() {
-    if (isDarkMode) {
-      setDarkMode(false);
-    } else {
-      setDarkMode(true);
-    }
-  }
+    setState(1);
+  }, []);
 
   return (
-    <>
-      {isShowingButton && (
-        <button
-          onClick={handleDarkMode}
-          className="flex aspect-square w-[3.6rem] items-center justify-center text-black dark:text-white"
-          title={isDarkMode ? "Toggle light mode" : "Toggle dark mode"}
-        >
-          {isDarkMode ? (
-            <BsFillMoonFill size={36} />
-          ) : (
-            <BsFillSunFill size={36} />
-          )}
-        </button>
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="flex aspect-square w-[3.6rem] items-center justify-center text-black dark:text-white"
+      title={
+        theme == "dark" && state ? "Toggle light mode" : "Toggle dark mode"
+      }
+    >
+      {theme == "dark" && state ? (
+        <BsFillMoonFill size={36} />
+      ) : (
+        <BsFillSunFill size={36} />
       )}
-    </>
+    </button>
   );
 }

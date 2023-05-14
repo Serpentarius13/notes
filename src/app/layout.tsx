@@ -1,7 +1,8 @@
 import Sidebar from "@/components/Sidebar/Sidebar";
 import "../../assets/main.scss";
 import { Roboto_Slab } from "next/font/google";
-import ClientAside from "@/components/ClientAside";
+
+import ClientProviders from "@/components/ClientAside";
 
 const RobotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -19,12 +20,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${RobotoSlab.className} flex `}>
-        {/* @ts-expect-error Server Component */}
-        <Sidebar />
+        <ClientProviders>
+          {/* @ts-expect-error Server Component */}
+          <Sidebar />
 
-        {children}
-
-        <ClientAside />
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

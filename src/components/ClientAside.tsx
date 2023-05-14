@@ -1,11 +1,17 @@
 "use client";
-import DarkModeToggler from "./Shared/DarkModeToggler";
+import { ThemeProvider } from "next-themes";
+
 import { Toaster } from "react-hot-toast";
 
-export default function ClientAside() {
+export default function ClientProviders({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
-      <DarkModeToggler />
+      <ThemeProvider attribute="class">{children}</ThemeProvider>
+
       <Toaster />
     </>
   );

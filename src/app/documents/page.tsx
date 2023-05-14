@@ -8,7 +8,7 @@ export default async function DocumentsPage() {
   const documents = await getDocuments();
 
   return (
-    <MainLayout title="Files">
+    <MainLayout title="Documents">
       <Documents documents={documents} />
     </MainLayout>
   );
