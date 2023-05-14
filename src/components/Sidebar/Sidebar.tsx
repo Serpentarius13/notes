@@ -6,10 +6,8 @@ import { BsFillChatLeftDotsFill } from "react-icons/bs";
 import { CgNotes } from "react-icons/cg";
 import Link from "next/link";
 import LogoutButton from "../Shared/LogoutButton";
-
-interface ISidebar {
-  avatar: string | null | undefined;
-}
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/features/lib/auth";
 
 type TSidebarLink = {
   to: string;
@@ -30,20 +28,23 @@ const sidebarLinks: TSidebarLink[] = [
   },
 ];
 
-export default function Sidebar({ avatar }: ISidebar) {
+export default  async function Sidebar() {
+  const session = await getServerSession(authOptions);
   return (
     <>
-      {avatar && (
+      {session && (
         <aside className="sidebar flex h-screen w-[10rem] flex-col items-center justify-between border-r-[1px] border-solid border-black bg-white p-[1.8rem] dark:border-white dark:bg-gray-900">
           <div className="flex flex-col items-center gap-[5rem]">
-            <div className="flex flex-col gap-[1.4rem] items-center">
-              <Image
-                width={48}
-                height={48}
-                alt="Your avatar"
-                src={avatar}
-                className="rounded-big"
-              />
+            <div className="flex flex-col items-center gap-[1.4rem]">
+              <Link href="/">
+                <Image
+                  width={48}
+                  height={48}
+                  alt="Your avatar"
+                  src={session.user.image as string}
+                  className="rounded-big"
+                />
+              </Link>
 
               <DarkModeToggler />
             </div>

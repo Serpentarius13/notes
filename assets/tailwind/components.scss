@@ -1,3 +1,11 @@
+@import "../utils.scss";
+
 @layer components {
-    
+  .rotated {
+    animation: rotate 2s linear infinite;
+  }
+
+  .note-text {
+    @include limitLines(2);
+  }
 }

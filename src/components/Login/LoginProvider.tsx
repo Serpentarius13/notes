@@ -1,7 +1,7 @@
 "use client";
 
 import { BsGoogle } from "react-icons/bs";
-import Button from "../Shared/Button";
+import Button from "../Shared/Buttons/Button";
 
 import { signIn } from "next-auth/react";
 

@@ -1,8 +1,6 @@
 import Sidebar from "@/components/Sidebar/Sidebar";
 import "../../assets/main.scss";
 import { Roboto_Slab } from "next/font/google";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/features/lib/auth";
 
 const RobotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -16,11 +14,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
-      <body className={`${RobotoSlab.className} `}>
-        <Sidebar avatar={session?.user.image} /> {children}
+      <body className={`${RobotoSlab.className} flex `}>
+        {/* @ts-expect-error Server Component */}
+        <Sidebar /> {children}
       </body>
     </html>
   );
