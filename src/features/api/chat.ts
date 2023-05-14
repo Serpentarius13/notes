@@ -1,5 +1,7 @@
 import { getOwnSession } from "../utils/getSession";
 
+import prisma from "../lib/prisma";
+
 export async function getChats() {
   const session = await getOwnSession();
 
