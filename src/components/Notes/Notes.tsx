@@ -8,6 +8,7 @@ import Note from "./Note/Note";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../Shared/LoadingSpinner";
+import { toaster } from "@/features/lib/toaster";
 
 export default function Notes() {
   const [notes, setNotes] = useState<NoteType[] | null>(null);
@@ -17,11 +18,15 @@ export default function Notes() {
   }, []);
 
   async function getNotes() {
-    const { data }: { data: NoteType[] } = await axios.get(
-      `${baseUrl}/api/note`
-    );
+    try {
+      const { data }: { data: NoteType[] } = await axios.get(
+        `${baseUrl}/api/note`
+      );
 
-    setNotes(data);
+      setNotes(data);
+    } catch (error) {
+      toaster.error("Error getting notes. Try reloading page");
+    }
   }
 
   if (!notes) {
@@ -30,7 +35,7 @@ export default function Notes() {
   return (
     <MainLayout title="Notes">
       {notes ? (
-        <ul className="grid w-full grid-cols-3 gap-[2rem]   sm:!grid-cols-[1fr] md:grid-cols-2 max-w-[90vw]">
+        <ul className="grid w-full max-w-[90vw] grid-cols-3 items-start   gap-[2rem] sm:!grid-cols-[1fr] md:grid-cols-2">
           {notes?.map((note) => (
             <Note key={note.id} {...note} />
           ))}

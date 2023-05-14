@@ -3,6 +3,7 @@ import { buttonVariants } from "@/components/Shared/Buttons/Button";
 import MainLayout from "@/components/Shared/MainLayout";
 
 import { serverFetcher } from "@/features/api/serverFetcher";
+import { toaster } from "@/features/lib/toaster";
 import { Note } from "@prisma/client";
 
 import Link from "next/link";

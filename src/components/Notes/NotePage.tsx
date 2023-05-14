@@ -9,8 +9,14 @@ import NoteDate from "./Note/NoteDate";
 import Button from "../Shared/Buttons/Button";
 import { serverFetcher } from "@/features/api/serverFetcher";
 import Loading from "../Shared/LoadingPage";
+import { toaster } from "@/features/lib/toaster";
+import { useRouter } from "next/navigation";
 
 export default function NotePage({ note }: { note: NoteType }) {
+  const router = useRouter();
+
+  if (!note) router.push("/notes");
+  
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [noteState, setNoteState] = useState<NoteType | null>(null);
 
@@ -29,8 +35,11 @@ export default function NotePage({ note }: { note: NoteType }) {
         note: noteState,
       });
       setNoteState(data);
+
+      toaster.success("Note was successfully updated!");
       setIsEditing(false);
     } catch (error) {
+      toaster.error("Error updating note");
     } finally {
       setIsLoading(false);
     }
@@ -81,6 +90,7 @@ export default function NotePage({ note }: { note: NoteType }) {
                     title={noteState.title}
                     text={noteState.text}
                     isFullSize
+                    id={noteState.id}
                   />
 
                   <div className="flex  flex-col gap-[1rem] text-[1.6rem]">

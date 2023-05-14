@@ -1,17 +1,28 @@
-interface INoteInner {
-  title: null | string;
-  text: string;
+import { Note } from "@prisma/client";
+import DeleteNote from "./DeleteNote";
+
+interface INoteInner extends Pick<Note, "id" | "text" | "title"> {
   isFullSize?: boolean;
 }
 
 export default function NoteInner({
   title,
+  id,
   text,
   isFullSize = false,
 }: INoteInner) {
   return (
     <div className="flex flex-col gap-[1.4rem] ">
-      <h4 className="text-[3rem] font-bold break-words">{title ? title : "No title"}</h4>
+      <div className="flex max-w-full items-center justify-between">
+        <h4 className="max-w-[80%] break-words text-[3rem] font-bold">
+          {title ? title : "No title"}
+        </h4>
+
+        <DeleteNote
+          noteId={id}
+          completeDeletion={isFullSize ? "to-main" : "refresh"}
+        />
+      </div>
 
       <p
         className={`${

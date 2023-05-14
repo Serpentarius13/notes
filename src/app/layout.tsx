@@ -2,6 +2,7 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import "../../assets/main.scss";
 import { Roboto_Slab } from "next/font/google";
 import DarkModeToggler from "@/components/Shared/DarkModeToggler";
+import { Toaster } from "react-hot-toast";
 
 const RobotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default async function RootLayout({
       </body>
 
       <DarkModeToggler />
+      <Toaster />
     </html>
   );
 }

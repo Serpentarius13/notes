@@ -10,6 +10,7 @@ import Button from "../Shared/Buttons/Button";
 import { FormEvent } from "react";
 import axios from "axios";
 import LoadingButton from "../Shared/Buttons/LoadingButton";
+import { toaster } from "@/features/lib/toaster";
 
 const AddNoteForm = ({
   handleClose,
@@ -37,8 +38,10 @@ const AddNoteForm = ({
 
       refetch();
       handleClose();
+
+      toaster.success("Note was successfuly added!");
     } catch (error) {
-      alert("There was an error creating note");
+      toaster.error("Error creating note");
     } finally {
       setLoading(false);
     }
@@ -51,7 +54,7 @@ const AddNoteForm = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex  flex-col items-start  gap-[1rem] w-full "
+      className="flex  w-full flex-col  items-start gap-[1rem] "
       ref={formRef}
     >
       <TextInput handleChange={handleTitleChange} placeholder="Note title" />
@@ -91,7 +94,7 @@ export default function AddNote({ refetch }: { refetch: () => void }) {
       ) : (
         <button
           onClick={() => setAddingNote(true)}
-          className="flex h-[15rem] w-fit px-[8rem]  items-center justify-center rounded-medium border-[1px] border-solid border-black bg-white transition-all hover:border-white hover:bg-black hover:text-white dark:border-white dark:text-black dark:hover:text-white"
+          className="flex h-[15rem] w-fit items-center  justify-center rounded-medium border-[1px] border-solid border-black bg-white px-[8rem] transition-all hover:border-white hover:bg-black hover:text-white dark:border-white dark:text-black dark:hover:text-white"
         >
           <AiOutlinePlus size={48} />
         </button>
