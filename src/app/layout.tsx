@@ -1,8 +1,7 @@
 import Sidebar from "@/components/Sidebar/Sidebar";
 import "../../assets/main.scss";
 import { Roboto_Slab } from "next/font/google";
-import DarkModeToggler from "@/components/Shared/DarkModeToggler";
-import { Toaster } from "react-hot-toast";
+import ClientAside from "@/components/ClientAside";
 
 const RobotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -20,11 +19,12 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${RobotoSlab.className} flex `}>
         {/* @ts-expect-error Server Component */}
-        <Sidebar /> {children}
-      </body>
+        <Sidebar />
 
-      <DarkModeToggler />
-      <Toaster />
+        {children}
+
+        <ClientAside />
+      </body>
     </html>
   );
 }
