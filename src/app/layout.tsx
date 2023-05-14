@@ -2,7 +2,7 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import "../../assets/main.scss";
 import { Roboto_Slab } from "next/font/google";
 
-import ClientProviders from "@/components/ClientAside";
+import ClientProviders from "@/components/ClientProviders";
 
 const RobotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
