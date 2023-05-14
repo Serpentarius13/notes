@@ -6,7 +6,7 @@ import LoadingSpinner from "../LoadingSpinner";
 interface ILoadingButton extends HTMLAttributes<HTMLButtonElement> {
   loading: boolean;
   children: React.ReactNode;
-  className: string;
+  className?: string;
 }
 
 export default function LoadingButton({

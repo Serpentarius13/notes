@@ -9,3 +9,7 @@ export function makeNotEnoughDataError(text: string) {
 export function makeBadRequestError(text: string) {
   return new Response(text, { status: 400 });
 }
+
+export function makeConflictError(text: string) {
+  return new Response(text, { status: 409 });
+}

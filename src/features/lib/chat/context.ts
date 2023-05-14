@@ -1,12 +1,10 @@
 import { getUserNotes } from "@/features/api/notes";
 
 import { TUserId } from "@/features/types/db";
+import { Message } from "@prisma/client";
 
-export enum ChatContext {
-  notes = "notes",
-  files = "files",
-  all = "all",
-}
+import { ChatContext } from "@/features/types/gpt";
+import { Session } from "next-auth";
 
 async function getNotesContext(userId: TUserId) {
   const notesOfUser = await getUserNotes(userId);
@@ -20,17 +18,40 @@ async function getNotesContext(userId: TUserId) {
     .join("\n")}`;
 }
 
+export function makeHello(
+  text: string,
+
+  session: Session
+) {
+  const { name } = session.user;
+  return `Hello. With this message I provide context of dialogue for you, so you know who am I and what I have written about for me to talk with you. My name is ${name}. My notes are: ${text}.`;
+}
+
+export function makePreviousMessages(previousMessages: Message[]) {
+  return `Previous messages of our conversation: ${previousMessages.join(
+    "\n"
+  )}.`;
+}
+
 export default async function decideContext(
-  type: `${ChatContext}`,
-  userId: TUserId
+  type: ChatContext,
+  session: Session
 ) {
   switch (type) {
-    case "notes": {
-      const contents = await getNotesContext(userId);
-      return contents;
+    case "Notes": {
+      const contents = await getNotesContext(session.user.id);
+
+      return makeHello(contents, session);
+    }
+
+    case "All": {
+      const notes = await getNotesContext(session.user.id);
+
+      return makeHello([notes].join("\n"), session);
     }
 
     default: {
+      return "";
       break;
     }
   }

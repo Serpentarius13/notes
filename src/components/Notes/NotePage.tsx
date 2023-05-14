@@ -11,12 +11,13 @@ import { serverFetcher } from "@/features/api/serverFetcher";
 import Loading from "../Shared/LoadingPage";
 import { toaster } from "@/features/lib/toaster";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
-export default function NotePage({ note }: { note: NoteType }) {
+export default function NotePage({ note }: { note: NoteType | null }) {
   const router = useRouter();
 
   if (!note) router.push("/notes");
-  
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [noteState, setNoteState] = useState<NoteType | null>(null);
 
@@ -31,7 +32,7 @@ export default function NotePage({ note }: { note: NoteType }) {
 
     try {
       setIsLoading(true);
-      const { data } = await serverFetcher.patch("/api/note", {
+      const { data } = await axios.patch("/api/note", {
         note: noteState,
       });
       setNoteState(data);

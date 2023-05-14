@@ -1,6 +1,6 @@
 "use client";
 
-import ReusableSelect from "@/components/Shared/Input/ReusableSelect";
+import ReusableSelect from "@/components/Shared/Input/Select/ReusableSelect";
 import { useRef, useState } from "react";
 
 export default function Test() {

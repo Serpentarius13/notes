@@ -5,12 +5,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 
 import { AiOutlineArrowDown } from "react-icons/ai";
+import SelectList from "./SelectList";
 
 interface ISelectProps {
   options: string[];
   handleChange: (opstringion: any) => void;
   placeholder?: string;
   currentOption: string;
+  isFacingUp?: boolean;
 }
 
 export default function ReusableSelect({
@@ -18,6 +20,7 @@ export default function ReusableSelect({
   options,
   handleChange,
   placeholder,
+  isFacingUp = false,
 }: ISelectProps) {
   const [isSelectOpened, setSelectOpened] = useState<boolean>(false);
   const selectRef = useRef<HTMLDivElement | null>(null);
@@ -86,6 +89,14 @@ export default function ReusableSelect({
   return (
     <ClickAwayListener onClickAway={() => setSelectOpened(false)}>
       <div className="relative  w-full min-w-[12rem] text-left" ref={selectRef}>
+        {isFacingUp && (
+          <SelectList
+            isSelectOpened={isSelectOpened}
+            options={options}
+            selectOption={selectOption}
+            isAbsolute={false}
+          />
+        )}
         <button
           type="button"
           className="backgrounded flex w-full items-center justify-between gap-[0.8rem] rounded-medium border-[1px] border-solid border-black px-[1.6rem] py-[0.8rem] text-[1.5rem] text-opacity-30  ring-inset hover:ring-1 focus:ring-1  dark:border-transparent dark:hover:ring-gray-300"
@@ -98,35 +109,17 @@ export default function ReusableSelect({
 
           <AiOutlineArrowDown
             className={` text-white opacity-20 transition-all ${
-              isSelectOpened && "rotate-180"
-            }`}
+              isFacingUp && "rotate-180"
+            }  ${isSelectOpened && isFacingUp ? "rotate-0" : "rotate-180"}`}
           />
         </button>
 
-        {isSelectOpened && (
-          <ul
-            className="bg-darkest-black absolute left-0 z-10 mt-2 w-full origin-top-right rounded-md border-[1px] border-solid border-black shadow-lg  dark:border-white"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="menu-button"
-            tabIndex={-1}
-          >
-            {options.map((option) => (
-              <li
-                className="py-1 "
-                key={option}
-                role="menuitem"
-                tabIndex={-1}
-              >
-                <button
-                  onClick={() => selectOption(option)}
-                  className="block w-full px-4 py-4 text-start text-[1.4rem] hover:bg-gray-400 hover:bg-opacity-15 dark:bg-opacity-5 "
-                >
-                  {option}
-                </button>
-              </li>
-            ))}
-          </ul>
+        {!isFacingUp && (
+          <SelectList
+            isSelectOpened={isSelectOpened}
+            options={options}
+            selectOption={selectOption}
+          />
         )}
       </div>
     </ClickAwayListener>

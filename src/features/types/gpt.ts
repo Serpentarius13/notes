@@ -32,3 +32,9 @@ export interface IGPTResponse {
   usage: IUsage;
   choices: IChoice[];
 }
+
+export enum ChatContext {
+  notes = "Notes",
+  files = "Files",
+  all = "All",
+}

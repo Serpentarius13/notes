@@ -12,24 +12,6 @@ import { getToken } from "next-auth/jwt";
 import { headers } from "next/dist/client/components/headers";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request | any) {
-  try {
-    const session = await getServerSession(authOptions);
-    // null
-
-    const tokenSession = await getToken({ req: request, raw: true });
-    // null
-
-    if (!session) return makeUnauthorizedError();
-    const notes = await getUserNotes(session.user.id);
-
-    return NextResponse.json(notes);
-  } catch (error) {
-    console.log(error);
-    return makeBadRequestError("Error getting notes");
-  }
-}
-
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -67,5 +49,3 @@ export async function PATCH(request: Request) {
     return makeBadRequestError("Error updating note");
   }
 }
-
-

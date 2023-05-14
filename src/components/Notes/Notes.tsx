@@ -1,37 +1,22 @@
-"use client";
-
-import { baseUrl } from "@/features/constants/baseUrl";
 import MainLayout from "../Shared/MainLayout";
 import AddNote from "./AddNote";
-import { Note as NoteType } from "@prisma/client";
+
 import Note from "./Note/Note";
-import axios from "axios";
-import { useEffect, useState } from "react";
+
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import { toaster } from "@/features/lib/toaster";
 
-export default function Notes() {
-  const [notes, setNotes] = useState<NoteType[] | null>(null);
+import { apiGetUserNotes } from "@/features/api/notes";
 
-  useEffect(() => {
-    getNotes();
-  }, []);
+export const revalidate = 0;
 
-  async function getNotes() {
-    try {
-      const { data }: { data: NoteType[] } = await axios.get(
-        `${baseUrl}/api/note`
-      );
-
-      setNotes(data);
-    } catch (error) {
-      toaster.error("Error getting notes. Try reloading page");
-    }
-  }
+export default async function Notes() {
+  const notes = await apiGetUserNotes();
 
   if (!notes) {
-    //...
+    toaster.error("Error getting notes");
   }
+
   return (
     <MainLayout title="Notes">
       {notes ? (
@@ -39,7 +24,7 @@ export default function Notes() {
           {notes?.map((note) => (
             <Note key={note.id} {...note} />
           ))}
-          <AddNote refetch={getNotes} />
+          <AddNote />
         </ul>
       ) : (
         <LoadingSpinner size={64} />

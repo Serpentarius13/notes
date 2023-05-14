@@ -11,19 +11,17 @@ import { FormEvent } from "react";
 import axios from "axios";
 import LoadingButton from "../Shared/Buttons/LoadingButton";
 import { toaster } from "@/features/lib/toaster";
+import { sleep } from "@/features/utils/sleep";
+import { useRouter } from "next/navigation";
 
-const AddNoteForm = ({
-  handleClose,
-  refetch,
-}: {
-  handleClose: () => void;
-  refetch: () => void;
-}) => {
+const AddNoteForm = ({ handleClose }: { handleClose: () => void }) => {
   const { value: title, handleChange: handleTitleChange } = useField<string>();
 
   const { value: text, handleChange: handleTextChange } = useField<string>();
 
   const [isLoading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const formRef = useRef<HTMLFormElement | null>(null);
 
@@ -36,10 +34,11 @@ const AddNoteForm = ({
 
       await axios.post("/api/note", { title, text });
 
-      refetch();
       handleClose();
 
       toaster.success("Note was successfuly added!");
+
+      router.refresh();
     } catch (error) {
       toaster.error("Error creating note");
     } finally {
@@ -81,16 +80,13 @@ const AddNoteForm = ({
   );
 };
 
-export default function AddNote({ refetch }: { refetch: () => void }) {
+export default function AddNote() {
   const [isAddingNote, setAddingNote] = useState<boolean>(false);
 
   return (
     <>
       {isAddingNote ? (
-        <AddNoteForm
-          handleClose={() => setAddingNote(false)}
-          refetch={refetch}
-        />
+        <AddNoteForm handleClose={() => setAddingNote(false)} />
       ) : (
         <button
           onClick={() => setAddingNote(true)}

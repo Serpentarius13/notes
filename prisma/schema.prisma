@@ -48,6 +48,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   notes Note[]
+  chats Chat[]
 
 
 
@@ -73,4 +74,26 @@ model Note {
   updatedAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+model Chat {
+  id String @id @default(uuid())
+
+  userId String
+
+  context String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Message[]
+}
+
+
+model Message {
+  id Int @id @default(autoincrement())
+  text String 
+  mine Boolean @default(true)
+
+  chatId String
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
 }
