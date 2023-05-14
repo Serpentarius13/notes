@@ -26,7 +26,7 @@ const AddNoteForm = ({ handleClose }: { handleClose: () => void }) => {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    if (!text) return alert("Write some text");
+    if (!text) return toaster.warning("Write some note text");
 
     try {
       setLoading(true);

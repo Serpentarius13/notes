@@ -2,6 +2,9 @@ import ChatList from "@/components/Chat/ChatList";
 import MainLayout from "@/components/Shared/MainLayout";
 import { getChats } from "@/features/api/chat";
 
+
+export const revalidate = 0;
+
 export default async function ChatLayout({
   children,
 }: {

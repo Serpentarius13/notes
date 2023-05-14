@@ -1,3 +1,4 @@
+import Button from "@/components/Shared/Buttons/Button";
 import LoadingButton from "@/components/Shared/Buttons/LoadingButton";
 import FileInput from "@/components/Shared/Input/FileInput";
 import TextInput from "@/components/Shared/Input/TextInput";
@@ -33,7 +34,7 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
 
       toaster.success("Document succesfully created!");
 
-      handleClose()
+      handleClose();
 
       router.refresh();
     } catch (error) {
@@ -57,6 +58,11 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
       <p className="max-w-full break-words text-[1.3rem]">{fileText}</p>
 
       <LoadingButton loading={isLoading}> Send document </LoadingButton>
+
+      <Button variant="default" type="button" onClick={handleClose}>
+        {" "}
+        Close{" "}
+      </Button>
     </form>
   );
 };
