@@ -49,6 +49,7 @@ model User {
   sessions      Session[]
   notes Note[]
   chats Chat[]
+  files Document[]
 
 
 
@@ -96,4 +97,18 @@ model Message {
 
   chatId String
   chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+}
+
+model Document {
+  id String @id @default(uuid())
+
+title String?
+  text String 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  userId String 
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

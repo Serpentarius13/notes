@@ -20,7 +20,7 @@ export default async function Notes() {
   return (
     <MainLayout title="Notes">
       {notes ? (
-        <ul className="grid w-full max-w-[90vw] grid-cols-3 items-start   gap-[2rem] sm:!grid-cols-[1fr] md:grid-cols-2">
+        <ul className="document-wrapper">
           {notes?.map((note) => (
             <Note key={note.id} {...note} />
           ))}

@@ -5,7 +5,7 @@ import { FormEvent, useEffect, useState } from "react";
 import TextInput from "../Shared/Input/TextInput";
 
 import NoteInner from "./Note/NoteInner";
-import NoteDate from "./Note/NoteDate";
+import NoteDate from "../Shared/Document/DocumentDate";
 import Button from "../Shared/Buttons/Button";
 import { serverFetcher } from "@/features/api/serverFetcher";
 import Loading from "../Shared/LoadingPage";

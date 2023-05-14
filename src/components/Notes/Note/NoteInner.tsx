@@ -18,10 +18,7 @@ export default function NoteInner({
           {title ? title : "No title"}
         </h4>
 
-        <DeleteNote
-          noteId={id}
-          completeDeletion={isFullSize ? "to-main" : "refresh"}
-        />
+        <DeleteNote noteId={id} isRedirectingToNotes={isFullSize}  />
       </div>
 
       <p

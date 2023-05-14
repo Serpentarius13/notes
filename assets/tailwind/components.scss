@@ -10,6 +10,16 @@
   }
 
   .add-btn {
-    @apply flex h-[15rem] w-fit items-center  justify-center rounded-medium border-[1px] border-solid border-black bg-white px-[8rem] transition-all hover:border-white hover:bg-black hover:text-white dark:border-white dark:text-black dark:hover:text-white;
+    @apply flex h-[15rem] w-fit  items-center justify-center rounded-medium border-[1px] border-solid border-black bg-white px-[8rem] text-[6rem] transition-all hover:border-white hover:bg-black hover:text-white dark:border-white dark:text-black dark:hover:text-white;
+
+    &:hover {
+      span {
+        @apply rotate-[360deg] transition-transform;
+      }
+    }
+  }
+
+  .document-wrapper {
+    @apply grid w-full max-w-[90vw] grid-cols-3 items-start  gap-[2rem] sm:grid-cols-1 md:grid-cols-2;
   }
 }

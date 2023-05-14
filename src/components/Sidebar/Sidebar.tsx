@@ -9,6 +9,8 @@ import LogoutButton from "../Shared/LogoutButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/features/lib/auth";
 
+import { AiFillFileText } from "react-icons/ai";
+
 type TSidebarLink = {
   to: string;
   icon: React.ReactNode;
@@ -26,6 +28,8 @@ const sidebarLinks: TSidebarLink[] = [
     icon: <CgNotes size={32} />,
     title: "To your notes",
   },
+
+  { to: "/documents", icon: <AiFillFileText size={32} />, title: "To your documents" },
 ];
 
 export default async function Sidebar() {

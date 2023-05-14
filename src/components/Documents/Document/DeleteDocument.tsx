@@ -7,31 +7,26 @@ import { sleep } from "@/features/utils/sleep";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-interface IDeleteNote {
-  noteId: number;
-  isRedirectingToNotes?: boolean;
+interface IDeleteDocument {
+  documentId: string;
 }
 
-export default function DeleteNote({
-  noteId,
-  isRedirectingToNotes = false,
-}: IDeleteNote) {
+export default function DeleteDocument({ documentId }: IDeleteDocument) {
   const router = useRouter();
 
   async function handleDelete() {
-    await axios.delete(`/api/note/${noteId}`);
+    await axios.delete(`/api/documents/${documentId}`);
   }
 
   async function onSuccess() {
     await sleep(2).then(() => {
-      if (isRedirectingToNotes) router.push("/");
-      else router.refresh();
+      router.push("/documents");
     });
-    toaster.success(`Successfully deleted note ${noteId}`);
+    toaster.success(`Successfully deleted document ${documentId}`);
   }
 
   function onError() {
-    toaster.error("Error deleting note");
+    toaster.error("Error deleting document");
   }
 
   return (

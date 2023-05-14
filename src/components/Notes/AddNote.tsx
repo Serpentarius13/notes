@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { AiOutlinePlus } from "react-icons/ai";
 import TextInput from "../Shared/Input/TextInput";
 import { useField } from "@/features/hooks/useField";
 import Button from "../Shared/Buttons/Button";
@@ -11,7 +10,7 @@ import { FormEvent } from "react";
 import axios from "axios";
 import LoadingButton from "../Shared/Buttons/LoadingButton";
 import { toaster } from "@/features/lib/toaster";
-import { sleep } from "@/features/utils/sleep";
+
 import { useRouter } from "next/navigation";
 
 const AddNoteForm = ({ handleClose }: { handleClose: () => void }) => {
@@ -88,11 +87,8 @@ export default function AddNote() {
       {isAddingNote ? (
         <AddNoteForm handleClose={() => setAddingNote(false)} />
       ) : (
-        <button
-          onClick={() => setAddingNote(true)}
-          className="add-btn"
-        >
-          <AiOutlinePlus size={48} />
+        <button onClick={() => setAddingNote(true)} className="add-btn">
+          <span> + </span>
         </button>
       )}
     </>
