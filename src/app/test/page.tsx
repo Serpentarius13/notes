@@ -1,21 +1,19 @@
 "use client";
 
+import FileInput from "@/components/Shared/Input/FileInput";
 import ReusableSelect from "@/components/Shared/Input/Select/ReusableSelect";
 import { useRef, useState } from "react";
 
 export default function Test() {
-  const [baseState, setState] = useState<string>("");
+  const [file, setFile] = useState<File>();
 
-  const options = ["123", "123", "321", "Notes context"];
+  function handleFile(file: File) {
+    setFile(file);
+  }
 
   return (
     <>
-      <ReusableSelect
-        handleChange={(option: string) => setState(option)}
-        currentOption={baseState}
-        options={options}
-        placeholder="Abobus"
-      />
+      <FileInput handleChange={handleFile} accept=".doc, .txt" />
     </>
   );
 }

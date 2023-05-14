@@ -1,6 +1,5 @@
 "use client";
 
-import { useLocalStorage } from "@/features/hooks/useLocalStorage";
 import {
   getFromLocalStorage,
   setToLocalStorage,

@@ -90,7 +90,7 @@ export default function AddNote() {
       ) : (
         <button
           onClick={() => setAddingNote(true)}
-          className="flex h-[15rem] w-fit items-center  justify-center rounded-medium border-[1px] border-solid border-black bg-white px-[8rem] transition-all hover:border-white hover:bg-black hover:text-white dark:border-white dark:text-black dark:hover:text-white"
+          className="add-btn"
         >
           <AiOutlinePlus size={48} />
         </button>
