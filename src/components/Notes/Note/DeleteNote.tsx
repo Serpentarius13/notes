@@ -47,11 +47,11 @@ export default function DeleteNote({ noteId, completeDeletion }: IDeleteNote) {
   }
 
   return (
-    <button onClick={handleDelete}>
+    <button onClick={handleDelete} title="Delete note">
       {isLoading ? (
         <LoadingSpinner size={24} />
       ) : (
-        <AiFillDelete size={24} className="text-red" />
+        <AiFillDelete size={24} className="text-red-500 hover:text-red-700" />
       )}
     </button>
   );
