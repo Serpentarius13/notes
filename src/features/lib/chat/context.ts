@@ -1,22 +1,24 @@
 import { getUserNotes } from "@/features/api/notes";
 
 import { TUserId } from "@/features/types/db";
-import { Message } from "@prisma/client";
+import { Message, Note, Document } from "@prisma/client";
 
 import { ChatContext } from "@/features/types/gpt";
 import { Session } from "next-auth";
 import { makeLocaleDate } from "@/features/utils/makeLocaleDate";
+import { getDocuments } from "@/features/api/documents";
 
-async function getNotesContext(userId: TUserId) {
-  const notesOfUser = await getUserNotes(userId);
-
+async function getGenericContext<
+  T extends { text: string; title: string | null; createdAt: Date }
+>(fetcherFunction: () => Promise<T[]>, naming: string) {
+  const items = await fetcherFunction();
   const makeTitle = (title: string | null | undefined) =>
-    `Title of note: ${title ? title : "No title"}`;
-  const makeText = (text: string) => `Text of note: ${text}`;
+    `Title of ${naming}: ${title ? title : "No title"}`;
+  const makeText = (text: string) => `Text of ${naming}: ${text}`;
 
-  const makeDate = (date: Date) => `Date of note: ${makeLocaleDate(date)}`;
+  const makeDate = (date: Date) => `Date of ${naming}: ${makeLocaleDate(date)}`;
 
-  return `My notes are: ${notesOfUser
+  return `My ${naming}s are: ${items
     .map(
       (note) =>
         `${makeTitle(note.title)} \n ${makeText(note.text)} \n ${makeDate(
@@ -24,6 +26,14 @@ async function getNotesContext(userId: TUserId) {
         )} \n `
     )
     .join("\n")}`;
+}
+
+async function getNotesContext() {
+  return await getGenericContext<Note>(() => getUserNotes(), "note");
+}
+
+async function getDocumentsContext() {
+  return await getGenericContext<Document>(() => getDocuments(), "document");
 }
 
 export function makeHello(
@@ -36,7 +46,7 @@ export function makeHello(
   const { name } = session.user;
   return `Hello. With this message I provide context of dialogue for you, so you know who am I and what I have written about for me to talk with you. My name is ${name}. My notes are: ${text}. My previous messages are: ${makePreviousMessages(
     previousMessages
-  )}. Message for this request is: ${actualMessage}`;
+  )}. My documents are: ${getDocumentsContext}. Message for this request is: ${actualMessage}`;
 }
 
 export function makePreviousMessages(previousMessages: Message[]) {
@@ -53,20 +63,27 @@ export default async function decideContext(
 ) {
   switch (type) {
     case "Notes": {
-      const contents = await getNotesContext(session.user.id);
+      const contents = await getNotesContext();
 
       return makeHello(contents, session, previousMessages, actualMessage);
     }
 
     case "All": {
-      const notes = await getNotesContext(session.user.id);
+      const notes = await getNotesContext();
+      const documents = await getDocumentsContext();
 
       return makeHello(
-        [notes].join("\n"),
+        [notes, documents].join("\n"),
         session,
         previousMessages,
         actualMessage
       );
+    }
+
+    case "Documents": {
+      const documents = await getDocumentsContext();
+
+      return makeHello(documents, session, previousMessages, actualMessage);
     }
 
     default: {

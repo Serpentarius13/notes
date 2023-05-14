@@ -1,5 +1,4 @@
 import { Message } from "@prisma/client";
-import { TNumString } from "../types/util";
 
 import prisma from "../lib/prisma";
 import { getOwnSession } from "../utils/getSession";
@@ -7,15 +6,15 @@ import { Session } from "next-auth";
 
 export function makeMessage(
   mine: boolean,
-  chatId: TNumString,
+  chatId: string,
   text: string
 ): Omit<Message, "id"> {
-  return { mine, chatId: +chatId, text };
+  return { mine, chatId: chatId, text };
 }
 
-export async function getChatMessages(chatId: TNumString, session: Session) {
+export async function getChatMessages(chatId: string, session: Session) {
   const chat = await prisma.chat.findFirst({
-    where: { id: +chatId, userId: session.user.id },
+    where: { id: chatId, userId: session.user.id },
     include: { messages: true },
   });
 
@@ -24,7 +23,7 @@ export async function getChatMessages(chatId: TNumString, session: Session) {
 
 export async function addChatMessage(
   isMine: boolean,
-  chatId: TNumString,
+  chatId: string,
   text: string
 ) {
   const messageToSend = makeMessage(isMine, chatId, text);

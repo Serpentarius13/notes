@@ -3,9 +3,11 @@ import prisma from "../lib/prisma";
 import { TUserId } from "../types/db";
 import { authOptions } from "../lib/auth";
 import { TNumString } from "../types/util";
+import { getOwnSession } from "../utils/getSession";
 
-export async function getUserNotes(userId: TUserId) {
-  return await prisma.note.findMany({ where: { userId } });
+export async function getUserNotes() {
+  const session = await getOwnSession();
+  return await prisma.note.findMany({ where: { userId: session.user.id } });
 }
 
 export async function getAllNotes() {
@@ -17,10 +19,7 @@ export async function getOneNote(noteId: TNumString) {
 }
 
 export async function apiGetUserNotes() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) throw new Error("Unauthorized");
-  const notes = await getUserNotes(session.user.id);
+  const notes = await getUserNotes();
 
   return notes;
 }

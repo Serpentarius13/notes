@@ -35,6 +35,6 @@ export interface IGPTResponse {
 
 export enum ChatContext {
   notes = "Notes",
-  files = "Files",
+  documents = "Documents",
   all = "All",
 }

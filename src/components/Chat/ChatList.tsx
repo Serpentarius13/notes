@@ -13,8 +13,8 @@ export default function ChatList({ chats }: IChatList) {
       <aside className=" flex max-h-full w-[25rem] flex-col justify-between gap-[2rem] overflow-y-auto border-r-[1px] border-solid border-black p-[1rem] dark:border-white md:w-[7rem]">
         {chats.length ? (
           <ul className="flex w-full flex-col items-start gap-[2.4rem] text-[1.8rem] ">
-            {chats.map(({ id }) => (
-              <li key={id} className="w-full">
+            {chats.map(({ id, context }, ix) => (
+              <li key={id} className="flex w-full flex-col gap-[0.2rem]">
                 <Link
                   href={`/chat/${id}`}
                   className="flex w-full items-center justify-between "
@@ -23,7 +23,10 @@ export default function ChatList({ chats }: IChatList) {
                     {" "}
                     {id}{" "}
                   </span>
-                  <span className="md:hidden">To chat №{id}</span>{" "}
+                  <span className="md:hidden">
+                    To chat №{ix + 1} <br />{" "}
+                    <span className="text-[1rem]">Context: {context}</span>
+                  </span>{" "}
                   <AiOutlineArrowRight size={36} className="md:hidden" />
                 </Link>
               </li>
@@ -35,7 +38,7 @@ export default function ChatList({ chats }: IChatList) {
           </>
         )}
 
-<CreateChatButton />
+        <CreateChatButton />
       </aside>
     </>
   );
