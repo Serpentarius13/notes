@@ -20,3 +20,13 @@ export async function createDocument(text: string, title?: string) {
 
   return document;
 }
+
+export async function getDocumentById(documentId: string) {
+  const session = await getOwnSession();
+
+  const document = await prisma.document.findFirst({
+    where: { id: documentId, userId: session.user.id },
+  });
+
+  return document;
+}

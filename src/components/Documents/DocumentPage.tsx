@@ -1,10 +1,9 @@
 "use client";
 
-import { Note as NoteType } from "@prisma/client";
-import { FormEvent, useEffect, useState } from "react";
+import { Document } from "@prisma/client";
+import { FormEvent, useState } from "react";
 import TextInput from "../Shared/Input/TextInput";
 
-import NoteInner from "./Note/NoteInner";
 import NoteDate from "../Shared/Document/DocumentDate";
 import Button from "../Shared/Buttons/Button";
 
@@ -12,14 +11,19 @@ import Loading from "../Shared/LoadingPage";
 import { toaster } from "@/features/lib/toaster";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import DocumentInner from "./Document/DocumentInner";
 
-export default function NotePage({ note }: { note: NoteType | null }) {
+export default function DocumentPage({
+  document,
+}: {
+  document: Document | null;
+}) {
   const router = useRouter();
 
-  if (!note) router.push("/notes");
+  if (!document) router.push("/documents");
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [noteState, setNoteState] = useState<NoteType | null>(note);
+  const [documentState, setDocumentState] = useState<Document | null>(document);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -29,14 +33,14 @@ export default function NotePage({ note }: { note: NoteType | null }) {
     try {
       setIsLoading(true);
       const { data } = await axios.patch("/api/note", {
-        note: noteState,
+        note: documentState,
       });
-      setNoteState(data);
+      setDocumentState(data);
 
-      toaster.success("Note was successfully updated!");
+      toaster.success("Document was successfully updated!");
       setIsEditing(false);
     } catch (error) {
-      toaster.error("Error updating note");
+      toaster.error("Error updating document");
     } finally {
       setIsLoading(false);
     }
@@ -48,32 +52,32 @@ export default function NotePage({ note }: { note: NoteType | null }) {
       ) : (
         <>
           {" "}
-          {isEditing && noteState ? (
+          {isEditing && documentState ? (
             <form
               className="flex w-full max-w-[80rem] flex-col gap-[2rem]"
               onSubmit={handleUpdateNote}
             >
               <TextInput
                 handleChange={(event: any) =>
-                  setNoteState((note: any) => ({
+                  setDocumentState((note: any) => ({
                     ...note,
                     title: event.target.value,
                   }))
                 }
-                placeholder="Title of note"
-                initialValue={noteState?.title as string}
+                placeholder="Title of document"
+                initialValue={documentState?.title as string}
               />
 
               <TextInput
                 handleChange={(event: any) =>
-                  setNoteState((note: any) => ({
+                  setDocumentState((note: any) => ({
                     ...note,
                     text: event.target.value,
                   }))
                 }
-                placeholder="Text of note"
+                placeholder="Text of document"
                 type="textarea"
-                initialValue={noteState?.text as string}
+                initialValue={documentState?.text as string}
               />
 
               <Button variant="outline">Save changes</Button>
@@ -81,22 +85,22 @@ export default function NotePage({ note }: { note: NoteType | null }) {
           ) : (
             <>
               {" "}
-              {noteState && (
+              {documentState && (
                 <div className="flex max-w-[60rem] flex-col gap-[1rem]">
-                  <NoteInner
-                    title={noteState.title}
-                    text={noteState.text}
+                  <DocumentInner
+                    title={documentState.title}
+                    text={documentState.text}
                     isFullSize
-                    id={noteState.id}
+                    id={documentState.id}
                   />
 
                   <div className="flex  flex-col gap-[1rem] text-[1.6rem]">
                     <span>
-                      Created at: <NoteDate date={noteState.createdAt} />
+                      Created at: <NoteDate date={documentState.createdAt} />
                     </span>
 
                     <span>
-                      Updated at: <NoteDate date={noteState.updatedAt} />
+                      Updated at: <NoteDate date={documentState.updatedAt} />
                     </span>
                   </div>
 

@@ -1,6 +1,3 @@
-import { getServerSession } from "next-auth";
-import { TNumString } from "../types/util";
-import { authOptions } from "../lib/auth";
 import { getOwnSession } from "../utils/getSession";
 
 export async function getChats() {
@@ -13,17 +10,17 @@ export async function getChats() {
   return chats;
 }
 
-export async function getChat(chatId: TNumString) {
+export async function getChat(chatId: string) {
   const chat = await prisma?.chat.findUnique({
-    where: { id: +chatId },
+    where: { id: chatId },
     include: { messages: true },
   });
 
   return chat;
 }
 
-export async function deleteChat(chatId: TNumString) {
-  await prisma?.chat.delete({ where: { id: +chatId } });
+export async function deleteChat(chatId: string) {
+  await prisma?.chat.delete({ where: { id: chatId } });
 
   return true;
 }
