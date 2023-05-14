@@ -5,7 +5,7 @@ export enum GPTModels {
 export enum GPTRoles {
   user = "user",
   assistant = "assistant",
-  admin = "admin",
+  "system" = "system",
 }
 
 export type TFinishReason = "stop" | "done";

@@ -1,15 +1,17 @@
+import { deleteChat } from "@/features/api/chat";
 import { makeBadRequestError } from "@/features/utils/serverError";
 
+export async function DELETE(
+  request: Request,
+  { params }: { params: { chatId: string } }
+) {
+  const { chatId } = params;
 
+  try {
+    await deleteChat(chatId);
 
-export async function GET(request: Request, {params}: {params: {chatId: string}}) {
-
-    const {chatId} = params;
-
-
-    try {
-        
-    } catch (error) {
-        return makeBadRequestError('Error getting chat messages')
-    }
+    return new Response("Ok");
+  } catch (error) {
+    return makeBadRequestError("Error deleting chat");
+  }
 }

@@ -34,36 +34,31 @@ export async function POST(request: Request) {
 
     const { context, messages, id } = chat;
 
-    await addChatMessage(true, id, message);
+    const messageForGpt = await decideContext(
+      context as ChatContext,
+      session,
+      messages,
+      message
+    );
 
-    let additionalMessage: string;
-
-    if (!messages.length) {
-      additionalMessage = await decideContext(context as ChatContext, session);
-    } else {
-      additionalMessage = makePreviousMessages(messages);
-    }
+    console.log(messageForGpt);
 
     const { data }: { data: IGPTResponse } = await gptInstance.post(
       "/chat/completions",
       {
         model: GPTModels.gpt,
-        messages: [
-          { role: GPTRoles.admin, content: additionalMessage },
-          {
-            role: GPTRoles.user,
-            content: message,
-          },
-        ],
+        messages: [{ role: GPTRoles.assistant, content: messageForGpt }],
       }
     );
 
     const response = data.choices[0].message.content;
 
-    await addChatMessage(false, id, response);
+    const myMessage = await addChatMessage(true, id, message);
+    const gptMessage = await addChatMessage(false, id, response);
 
-    return NextResponse.json(data.choices[0].message.content);
-  } catch (error) {
+    return NextResponse.json({ response: gptMessage, myMessage: myMessage });
+  } catch (error: any) {
+    console.log(error?.response.data);
     return makeBadRequestError("Error sending message");
   }
 }

@@ -8,5 +8,9 @@ export function useField<T>(initialValue?: T) {
     setValue(target.value);
   }
 
-  return {value, handleChange}
+  function resetState() {
+    setValue(initialValue ?? "")
+  }
+
+  return {value, handleChange, resetState}
 }

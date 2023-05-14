@@ -11,7 +11,7 @@ export default async function ChatLayout({
   return (
     <MainLayout title="Chat">
       {" "}
-      <div className="flex h-full w-full gap-[2rem] rounded-medium border-[1px] border-solid border-black p-[1rem] dark:border-white">
+      <div className="flex h-[85vh] w-full gap-[2rem] rounded-medium border-[1px] border-solid border-black p-[1rem] dark:border-white">
         <ChatList chats={chats ?? []} />
 
         {children}

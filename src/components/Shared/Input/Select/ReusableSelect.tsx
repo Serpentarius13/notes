@@ -61,7 +61,7 @@ export default function ReusableSelect({
         selectRef.current?.contains(document.activeElement)
       ) {
         event.preventDefault();
-      }
+      } else return;
 
       switch (event.key) {
         case "ArrowUp": {

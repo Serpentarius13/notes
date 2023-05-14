@@ -21,3 +21,9 @@ export async function getChat(chatId: TNumString) {
 
   return chat;
 }
+
+export async function deleteChat(chatId: TNumString) {
+  await prisma?.chat.delete({ where: { id: +chatId } });
+
+  return true;
+}

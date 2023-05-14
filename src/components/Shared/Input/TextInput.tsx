@@ -5,6 +5,7 @@ interface ITextInput {
   handleChange: (event: any) => void;
   type?: TInputType;
   initialValue?: string;
+  value?: string
 }
 
 export default function TextInput({
@@ -12,6 +13,7 @@ export default function TextInput({
   handleChange,
   type = "text",
   initialValue = "",
+  value
 }: ITextInput) {
   const styleClass =
     "w-full p-[1rem] bg-white border-[1px] border-solid border-black rounded-big !text-black focus:outline-none focus:ring-1 focus:ring-solid focus:ring-black text-[1.8rem]  ";
@@ -23,6 +25,7 @@ export default function TextInput({
           onChange={handleChange}
           placeholder={placeholder}
           defaultValue={initialValue}
+          value={value}
         ></textarea>
       ) : (
         <input
@@ -31,6 +34,7 @@ export default function TextInput({
           placeholder={placeholder}
           className={`${styleClass}`}
           defaultValue={initialValue}
+          value={value}
         />
       )}
     </>

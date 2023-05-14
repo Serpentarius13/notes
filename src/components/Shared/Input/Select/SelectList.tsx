@@ -22,10 +22,9 @@ export default function SelectList({
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
-          tabIndex={-1}
         >
           {options.map((option) => (
-            <li className="py-1 " key={option} role="menuitem" tabIndex={-1}>
+            <li className="py-1 " key={option} role="menuitem">
               <button
                 onClick={() => selectOption(option)}
                 className="hover:bg-opacity-15 block w-full px-4 py-4 text-start text-[1.4rem] hover:bg-gray-400 dark:bg-opacity-5 "

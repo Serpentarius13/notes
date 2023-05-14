@@ -1,6 +1,9 @@
-import ChatComponent from "@/components/Chat/ChatComponent";
+import ChatComponent from "@/components/Chat/ChatInner/ChatComponent";
 import { getChatMessages } from "@/features/api/message";
+import { getOwnSession } from "@/features/utils/getSession";
 import { Message } from "@prisma/client";
+
+export const revalidate = 0;
 
 export default async function ChatRoom({
   params,
@@ -9,7 +12,16 @@ export default async function ChatRoom({
 }) {
   const { chatId } = params;
 
-  const chatMessages = await getChatMessages(chatId);
+  const session = await getOwnSession();
+  const chatMessages = await getChatMessages(chatId, session);
 
-  return <ChatComponent messages={chatMessages} />;
+  if (!chatMessages) throw new Error("Chat not found");
+
+  return (
+    <ChatComponent
+      fetchedMessages={chatMessages}
+      chatId={chatId}
+      session={session}
+    />
+  );
 }
