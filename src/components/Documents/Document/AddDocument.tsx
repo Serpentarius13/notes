@@ -15,6 +15,8 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
   const [file, setFile] = useState<File | string>("/pdf.pdf");
   const [isLoading, setLoading] = useState<boolean>(false);
 
+  const [isFileLoading, setFileLoading] = useState<boolean>(false)
+
   const router = useRouter();
 
   const [fileText, setFileText] = useState<string | null>(null);
@@ -23,7 +25,7 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
 
   async function handleFile(file: File) {
     try {
-      setLoading(true);
+      setFileLoading(true)
       if (file.name.split(".").at(-1) === "pdf") {
         const formData = new FormData();
 
@@ -51,7 +53,7 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
         toaster.error("Error uploading file");
       }
     } finally {
-      setLoading(false);
+      setFileLoading(false)
     }
   }
 
@@ -84,7 +86,7 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
         handleChange={handleFile}
         placeholder="Drop your document here"
         accept=".txt, .doc, .docx, .pdf"
-        isLoading={isLoading}
+        isLoading={isFileLoading}
       />
 
       <p className="max-w-full break-words text-[1.3rem]">
