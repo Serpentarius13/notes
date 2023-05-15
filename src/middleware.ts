@@ -19,4 +19,4 @@ export default async function middleware(request: Request | any) {
   }
 }
 
-export const matcher = ["/", "/login", "/chat", "/documents"];
+export const matcher = ["/", "/login", "/chat", "/documents", '/note/:path*'];
