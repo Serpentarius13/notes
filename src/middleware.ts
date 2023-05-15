@@ -5,7 +5,12 @@ import { NextResponse } from "next/server";
 export default async function middleware(request: Request | any) {
   const token = await getToken({ req: request, raw: true });
 
-  if ((request.url === baseUrl || request.url.includes("/chat")) && !token) {
+  if (
+    (request.url === baseUrl ||
+      request.url.includes("/chat") ||
+      request.url.includes("/documents")) &&
+    !token
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -14,4 +19,4 @@ export default async function middleware(request: Request | any) {
   }
 }
 
-export const matcher = ["/", "/login", "/chat"];
+export const matcher = ["/", "/login", "/chat", "/documents"];
