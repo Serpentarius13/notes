@@ -7,7 +7,7 @@ import TextInput from "@/components/Shared/Input/TextInput";
 import { serverFetcher } from "@/features/api/serverFetcher";
 import { useField } from "@/features/hooks/useField";
 import { toaster } from "@/features/lib/toaster";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -17,23 +17,24 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
 
   const router = useRouter();
 
-  const [fileText, setFileText] = useState<string>("");
+  const [fileText, setFileText] = useState<string | null>(null);
 
   const { value: title, handleChange } = useField<string>("");
 
   async function handleFile(file: File) {
     try {
+      setLoading(true);
       if (file.name.split(".").at(-1) === "pdf") {
         const formData = new FormData();
 
         formData.append("file", file);
 
-        const { data: text } = await serverFetcher.postForm<{ text: string }>(
-          "/api/pdf",
+        const { data } = await axios.postForm<{ text: string }>(
+          `https://notes-ebzl.onrender.com/pdf`,
           formData
         );
 
-        console.log(text);
+        setFileText(data.text);
 
         // setFileText(text);
       } else {
@@ -44,7 +45,13 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
         reader.onload = (event) => setFileText(event!.target!.result as string);
       }
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        toaster.error(error.message);
+      } else {
+        toaster.error("Error uploading file");
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -67,10 +74,6 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
     }
   }
 
-  function handleLoad({ numPages }: any) {
-    console.log(numPages);
-  }
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -81,9 +84,12 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
         handleChange={handleFile}
         placeholder="Drop your document here"
         accept=".txt, .doc, .docx, .pdf"
+        isLoading={isLoading}
       />
 
-      <p className="max-w-full break-words text-[1.3rem]">{fileText}</p>
+      <p className="max-w-full break-words text-[1.3rem]">
+        {fileText?.trim() === "" ? "Empty file" : fileText}
+      </p>
 
       <LoadingButton loading={isLoading}> Send document </LoadingButton>
 
