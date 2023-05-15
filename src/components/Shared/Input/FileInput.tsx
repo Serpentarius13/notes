@@ -21,7 +21,12 @@ export default function FileInput({
 
     if (!file) return;
 
-    if (!accept.split(",").find((el) => el.trim() === file.type))
+
+    if (
+      !accept
+        .split(",")
+        .find((el) => el.trim().slice(1) === file.name.split(".").at(-1))
+    )
       return toaster.warning("Wrong file type");
     handleChange(file);
 

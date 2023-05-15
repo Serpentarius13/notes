@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "@/components/Shared/Buttons/Button";
 import LoadingButton from "@/components/Shared/Buttons/LoadingButton";
 import FileInput from "@/components/Shared/Input/FileInput";
@@ -5,10 +7,12 @@ import TextInput from "@/components/Shared/Input/TextInput";
 import { serverFetcher } from "@/features/api/serverFetcher";
 import { useField } from "@/features/hooks/useField";
 import { toaster } from "@/features/lib/toaster";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
+  const [file, setFile] = useState<File | string>("/pdf.pdf");
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
@@ -17,12 +21,29 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
 
   const { value: title, handleChange } = useField<string>("");
 
-  function handleFile(file: File) {
-    const reader = new FileReader();
+  async function handleFile(file: File) {
+    try {
+      if (file.name.split(".").at(-1) === "pdf") {
+        const formData = new FormData();
 
-    reader.readAsText(file);
+        formData.append("file", file);
 
-    reader.onload = (event) => setFileText(event!.target!.result as string);
+        const { data: text } = await serverFetcher.postForm<string>(
+          "/api/pdf",
+          formData
+        );
+
+        setFileText(text);
+      } else {
+        const reader = new FileReader();
+
+        reader.readAsText(file);
+
+        reader.onload = (event) => setFileText(event!.target!.result as string);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -44,6 +65,10 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
     }
   }
 
+  function handleLoad({ numPages }: any) {
+    console.log(numPages);
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -53,6 +78,7 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
       <FileInput
         handleChange={handleFile}
         placeholder="Drop your document here"
+        accept=".txt, .doc, .docx, .pdf"
       />
 
       <p className="max-w-full break-words text-[1.3rem]">{fileText}</p>
