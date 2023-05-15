@@ -1,7 +1,7 @@
 import NotePage from "@/components/Notes/NotePage";
 import { buttonVariants } from "@/components/Shared/Buttons/Button";
 import MainLayout from "@/components/Shared/MainLayout";
-import { apiGetNoteById } from "@/features/api/notes";
+import { getOneNote } from "@/features/api/notes";
 
 import { Note } from "@prisma/client";
 
@@ -12,7 +12,7 @@ export default async function Note({
 }: {
   params: { noteId: string };
 }) {
-  const note = await apiGetNoteById(noteId);
+  const note = await getOneNote(noteId);
 
   return (
     <MainLayout title={`Page of note ${noteId}`}>

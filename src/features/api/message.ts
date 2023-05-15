@@ -1,7 +1,7 @@
 import { Message } from "@prisma/client";
 
 import prisma from "../lib/prisma";
-import { getOwnSession } from "../utils/getSession";
+
 import { Session } from "next-auth";
 
 export function makeMessage(

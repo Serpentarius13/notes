@@ -8,7 +8,8 @@ export default async function middleware(request: Request | any) {
   if (
     (request.url === baseUrl ||
       request.url.includes("/chat") ||
-      request.url.includes("/documents")) &&
+      request.url.includes("/documents") ||
+      request.url.includes("/note")) &&
     !token
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -19,4 +20,4 @@ export default async function middleware(request: Request | any) {
   }
 }
 
-export const matcher = ["/", "/login", "/chat", "/documents", '/note/:path*'];
+export const matcher = ["/", "/login", "/chat", "/documents", "/note/:path*"];
