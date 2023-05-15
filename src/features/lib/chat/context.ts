@@ -36,17 +36,24 @@ async function getDocumentsContext() {
   return await getGenericContext<Document>(() => getDocuments(), "document");
 }
 
-export function makeHello(
-  text: string,
+interface IMakeHello {
+  session: Session;
+  previousMessages: Message[];
+  actualMessage: string;
+}
 
-  session: Session,
-  previousMessages: Message[],
-  actualMessage: string
-) {
+export function makeHello({
+  session,
+  previousMessages,
+  actualMessage,
+}: IMakeHello) {
   const { name } = session.user;
-  return `Hello. With this message I provide context of dialogue for you, so you know who am I and what I have written about for me to talk with you. My name is ${name}. My notes are: ${text}. My previous messages are: ${makePreviousMessages(
+
+  const hello = `With this message I provide context of dialogue for you, so you know who am I and what I have written about for me to talk with you. Note that this only for context and not the actual message. My name is ${name}. %text%. ${makePreviousMessages(
     previousMessages
-  )}. My documents are: ${getDocumentsContext}. Message for this request is: ${actualMessage}`;
+  )} Message for this request is: ${actualMessage}. Context ends here.`;
+
+  return (text: string) => hello.replace("%text%", text);
 }
 
 export function makePreviousMessages(previousMessages: Message[]) {
@@ -61,29 +68,25 @@ export default async function decideContext(
   previousMessages: Message[],
   actualMessage: string
 ) {
+  const createMessage = makeHello({ session, previousMessages, actualMessage });
   switch (type) {
     case "Notes": {
       const contents = await getNotesContext();
 
-      return makeHello(contents, session, previousMessages, actualMessage);
+      return createMessage(contents);
     }
 
     case "All": {
       const notes = await getNotesContext();
       const documents = await getDocumentsContext();
 
-      return makeHello(
-        [notes, documents].join("\n"),
-        session,
-        previousMessages,
-        actualMessage
-      );
+      return createMessage([notes, documents].join("\n "));
     }
 
     case "Documents": {
       const documents = await getDocumentsContext();
 
-      return makeHello(documents, session, previousMessages, actualMessage);
+      return createMessage(documents);
     }
 
     default: {
