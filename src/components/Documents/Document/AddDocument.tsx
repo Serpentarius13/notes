@@ -15,7 +15,7 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
   const [file, setFile] = useState<File | string>("/pdf.pdf");
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const [isFileLoading, setFileLoading] = useState<boolean>(false)
+  const [isFileLoading, setFileLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -25,14 +25,14 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
 
   async function handleFile(file: File) {
     try {
-      setFileLoading(true)
+      setFileLoading(true);
       if (file.name.split(".").at(-1) === "pdf") {
         const formData = new FormData();
 
         formData.append("file", file);
 
         const { data } = await axios.postForm<{ text: string }>(
-          `https://notes-ebzl.onrender.com/pdf`,
+          `${process.env.NEXT_PUBLIC_PDF_API}/pdf`,
           formData
         );
 
@@ -53,7 +53,7 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
         toaster.error("Error uploading file");
       }
     } finally {
-      setFileLoading(false)
+      setFileLoading(false);
     }
   }
 
