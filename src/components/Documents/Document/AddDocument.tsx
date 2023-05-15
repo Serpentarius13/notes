@@ -28,12 +28,14 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
 
         formData.append("file", file);
 
-        const { data: text } = await serverFetcher.postForm<string>(
+        const { data: text } = await serverFetcher.postForm<{ text: string }>(
           "/api/pdf",
           formData
         );
 
-        setFileText(text);
+        console.log(text);
+
+        // setFileText(text);
       } else {
         const reader = new FileReader();
 

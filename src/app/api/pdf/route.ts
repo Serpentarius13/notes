@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import * as pdfjs from "pdfjs-dist";
+import { getDocument, GlobalWorkerOptions } from "pdfjs-dist";
 
 interface ITextContent {
   items: { str: string }[];
@@ -12,9 +12,9 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File;
 
     const buffer = await file.arrayBuffer();
-    pdfjs.GlobalWorkerOptions.workerSrc = "pdfjs-dist/legacy/build/pdf.worker";
+    GlobalWorkerOptions.workerSrc = "pdfjs-dist/legacy/build/pdf.worker";
 
-    const task = pdfjs.getDocument(buffer);
+    const task = getDocument(buffer);
 
     const pdf = await task.promise;
 
