@@ -6,12 +6,12 @@ import Note from "./Note/Note";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import { toaster } from "@/features/lib/toaster";
 
-import { apiGetUserNotes } from "@/features/api/notes";
+import { getUserNotes } from "@/features/api/notes";
 
 export const revalidate = 0;
 
 export default async function Notes() {
-  const notes = await apiGetUserNotes();
+  const notes = await getUserNotes();
 
   if (!notes) {
     toaster.error("Error getting notes");
