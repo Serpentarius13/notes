@@ -4,12 +4,12 @@ import { NextResponse } from "next/server";
 
 export default async function middleware(request: Request | any) {
   const token = await getToken({ req: request, raw: true });
-
+  console.log(token, request.url);
   if (
-    (request.url === baseUrl ||
-      request.url.includes("/chat") ||
+    (request.url.includes("/chat") ||
       request.url.includes("/documents") ||
-      request.url.includes("/note")) &&
+      request.url.includes("/note") ||
+      request.nextUrl.pathname === "/") &&
     !token
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
