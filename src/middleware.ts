@@ -1,10 +1,10 @@
 import { getToken } from "next-auth/jwt";
-import { baseUrl } from "./features/constants/baseUrl";
+
 import { NextResponse } from "next/server";
 
 export default async function middleware(request: Request | any) {
   const token = await getToken({ req: request, raw: true });
-  console.log(token, request.url);
+
   if (
     (request.url.includes("/chat") ||
       request.url.includes("/documents") ||
