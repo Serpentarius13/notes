@@ -5,7 +5,18 @@ import { NextResponse } from "next/server";
 export default async function middleware(request: Request | any) {
   const token = await getToken({ req: request, raw: true });
 
-  console.log(token, request.url);
+  console.log(
+    token,
+    request.url,
+    request.url.includes("/chat"),
+    "chat",
+    request.url.includes("/documents"),
+    "docs",
+    request.url.includes("/note"),
+    "notes",
+    request.nextUrl.pathname === "/",
+    "pathname"
+  );
 
   if (
     (request.url.includes("/chat") ||
