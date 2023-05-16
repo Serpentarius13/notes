@@ -32,13 +32,12 @@ const DocumentForm = ({ handleClose }: { handleClose: () => void }) => {
         formData.append("file", file);
 
         const { data } = await axios.postForm<{ text: string }>(
-          `http://localhost:4000/pdf`,
+          `${process.env.NEXT_PUBLIC_PDF_API}pdf`,
           formData
         );
 
         setFileText(data.text);
 
-        // setFileText(text);
       } else {
         const reader = new FileReader();
 
