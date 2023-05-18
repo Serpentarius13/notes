@@ -49,9 +49,9 @@ export function makeHello({
 }: IMakeHello) {
   const { name } = session.user;
 
-  const hello = `With this message I provide context of dialogue for you, so you know who am I and what I have written about for me to talk with you. Note that this only for context and not the actual message. My name is ${name}. %text%. ${makePreviousMessages(
+  const hello = `(With this message I provide context of dialogue for you, so you know who am I and what I have written about for me to talk with you. Note that this only for context and not the actual message. My name is ${name}. %text%. ${makePreviousMessages(
     previousMessages
-  )} Message for this request is: ${actualMessage}. Context ends here.`;
+  )} Context ends here.) ${actualMessage} `;
 
   return (text: string) => hello.replace("%text%", text);
 }
