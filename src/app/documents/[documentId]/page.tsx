@@ -4,6 +4,7 @@ import { getDocumentById } from "@/features/api/documents";
 import Link from "next/link";
 
 import DocumentPage from "@/components/Documents/DocumentPage";
+import { notFound } from "next/navigation";
 
 export default async function DocumentsPage({
   params,
@@ -13,6 +14,8 @@ export default async function DocumentsPage({
   const { documentId } = params;
 
   const document = await getDocumentById(documentId);
+
+  if (!document) return notFound();
 
   return (
     <MainLayout title={`Page of document ${documentId}`}>
